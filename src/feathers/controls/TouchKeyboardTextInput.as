@@ -40,6 +40,14 @@ package feathers.controls
 
 		private function touchKeyboard_keyDownHandler(event:KeyboardEvent):void
 		{
+			if (!hasFocus)
+			{
+				setFocus();
+				if (textEditor !== null && textEditor.text !== null)
+				{
+					textEditor.selectRange(textEditor.text.length, textEditor.text.length);
+				}
+			}
 			if (textEditor is ITouchKeyboardTextEditor)
 			{
 				(textEditor as ITouchKeyboardTextEditor).touchKeyboard_keyboardEventHandler(event);
