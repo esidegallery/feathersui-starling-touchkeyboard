@@ -3,6 +3,7 @@ package feathers.controls
 	import feathers.controls.TextInput;
 	import feathers.core.ITextEditor;
 	import feathers.touchKeyboard.TouchKeyboard;
+	import feathers.touchKeyboard.data.TouchKeyboardKeyCode;
 
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
@@ -40,7 +41,7 @@ package feathers.controls
 
 		private function touchKeyboard_keyDownHandler(event:KeyboardEvent):void
 		{
-			if (!hasFocus)
+			if (!hasFocus && event.keyCode !== TouchKeyboardKeyCode.SWITCH_LAYOUT && event.keyCode !== TouchKeyboardKeyCode.CLOSE_KEYBOARD)
 			{
 				setFocus();
 				if (textEditor !== null && textEditor.text !== null)
