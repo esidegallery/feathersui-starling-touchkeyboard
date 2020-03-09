@@ -46,7 +46,7 @@ package keyboardLayouts
 					KeyData.createCharacterKey("@".charCodeAt(), false, "¥".charCodeAt()),
 					KeyData.createCharacterKey("\"".charCodeAt(), false, "∘".charCodeAt()),
 					KeyData.createNonCharacterKey(null, Keyboard.ENTER, 1.5, false, returnIcon, returnDownIcon)
-				], 1, HorizontalAlign.RIGHT),
+				]),
 				new RowData(new <IRenderableData>[
 					KeyData.createToggleKey(null, Keyboard.SHIFT, 1, false, shiftIcon, shiftDownIcon, shiftSelectedIcon),
 					new GapData(),

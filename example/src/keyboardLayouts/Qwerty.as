@@ -47,7 +47,7 @@ package keyboardLayouts
 					KeyData.createCharacterKey("K".charCodeAt(), true),
 					KeyData.createCharacterKey("L".charCodeAt(), true),
 					KeyData.createNonCharacterKey(null, Keyboard.ENTER, 1.75, false, returnIcon, returnDownIcon)
-				], 1, HorizontalAlign.RIGHT),
+				]),
 				new RowData(new <IRenderableData>[
 					KeyData.createToggleKey(null, Keyboard.SHIFT, 1, false, shiftIcon, shiftDownIcon, shiftSelectedIcon),
 					new GapData(),
