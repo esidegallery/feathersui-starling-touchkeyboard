@@ -119,7 +119,7 @@ package feathers.touchKeyboard
 		}
 
 		/** @private */
-		private var _minimumKeyUnitSize:Number = NaN;
+		private var _minimumKeyUnitSize:Number = 50;
 		/**
 		 * The minimum size of a key unit. All rows, keys and gaps are sized based on a key unit size.
 		 */
