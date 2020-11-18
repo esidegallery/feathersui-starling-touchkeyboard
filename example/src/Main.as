@@ -137,7 +137,7 @@ package
 				createTouchKeyboard();
 				touchKeyboard.addEventListener(FeathersEventType.CREATION_COMPLETE, function():void
 				{
-					setTimeout(openTouchKeyboard, 0.2);
+					setTimeout(openTouchKeyboard, 200);
 				});
 				touchKeyboard.validate();
 			}
