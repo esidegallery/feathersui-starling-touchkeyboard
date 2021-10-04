@@ -19,22 +19,23 @@ package feathers.controls
 	{
 		public function touchKeyboard_keyboardEventHandler(event:KeyboardEvent):void
 		{
-			if (event && event.type == KeyboardEvent.KEY_DOWN)
+			if (event == null || event.type != KeyboardEvent.KEY_DOWN)
 			{
-				stage_keyDownHandler(event);
-				if (event.ctrlKey || event.altKey)
-				{
-					return;
-				}
-				if (event.charCode)
-				{
-					var char:String = String.fromCharCode(event.charCode);
-					nativeFocus_textInputHandler(new TextEvent(TextEvent.TEXT_INPUT, false, true, char));
-				}
-				else if (event.keyCode == Keyboard.ENTER)
-				{
-					nativeFocus_textInputHandler(new TextEvent(TextEvent.TEXT_INPUT, false, true, "\n"));
-				}
+				return;
+			}
+			stage_keyDownHandler(event);
+			if (event.ctrlKey || event.altKey)
+			{
+				return;
+			}
+			if (event.charCode > 0)
+			{
+				var char:String = String.fromCharCode(event.charCode);
+				nativeFocus_textInputHandler(new TextEvent(TextEvent.TEXT_INPUT, false, true, char));
+			}
+			else if (event.keyCode == Keyboard.ENTER)
+			{
+				nativeFocus_textInputHandler(new TextEvent(TextEvent.TEXT_INPUT, false, true, "\n"));
 			}
 		}
 

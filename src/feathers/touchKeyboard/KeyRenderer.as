@@ -70,10 +70,10 @@ package feathers.touchKeyboard
 
 		override protected function initialize():void
 		{
-			itemHasIcon = false;
-			useStateDelayTimer = false;
-			isFocusEnabled = false;
-			isChildFocusEnabled = false;
+			_itemHasIcon = false;
+			_useStateDelayTimer = false;
+			_isFocusEnabled = false;
+			_isChildFocusEnabled = false;
 
 			tapToSelect = new TouchToSelect(this, true, true);
 

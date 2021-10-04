@@ -62,6 +62,7 @@ package feathers.touchKeyboard
         {
             visible = false;
             touchable = false;
+            _isFocusEnabled = false;
             super.initialize();
         }
     }

@@ -36,18 +36,20 @@ package feathers.controls
 			{
 				return new TouchKeyboardTextBlockTextEditor;
 			}
+			_isFocusEnabled = false;
 			super();
 		}
 
 		private function touchKeyboard_keyDownHandler(event:KeyboardEvent):void
 		{
-			if (!hasFocus && event.keyCode !== TouchKeyboardKeyCode.SWITCH_LAYOUT && event.keyCode !== TouchKeyboardKeyCode.CLOSE_KEYBOARD)
+			if (!hasFocus && event.keyCode != TouchKeyboardKeyCode.SWITCH_LAYOUT && event.keyCode != TouchKeyboardKeyCode.CLOSE_KEYBOARD)
 			{
 				setFocus();
-				if (textEditor !== null && textEditor.text !== null)
+				if (textEditor != null && textEditor.text != null)
 				{
 					textEditor.selectRange(textEditor.text.length, textEditor.text.length);
 				}
+				validate();
 			}
 			if (textEditor is ITouchKeyboardTextEditor)
 			{
