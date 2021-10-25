@@ -15,11 +15,11 @@ package feathers.controls
 	import starling.events.TouchPhase;
 	import starling.utils.Pool;
 
-	public class TouchKeyboardTextBlockTextEditor extends TextBlockTextEditor implements ITouchKeyboardTextEditor
+	public class TouchKeyboardTextBlockTextEditor extends TextBlockTextEditor implements ITouchKeyboardTextInput
 	{
-		public function touchKeyboard_keyboardEventHandler(event:KeyboardEvent):void
+		public function touchKeyboard_keyDownHandler(event:KeyboardEvent):void
 		{
-			if (event == null || event.type != KeyboardEvent.KEY_DOWN)
+			if (event == null)
 			{
 				return;
 			}
@@ -42,7 +42,7 @@ package feathers.controls
 		override protected function stage_touchHandler(event:TouchEvent):void
 		{
 			var touch:Touch = event.getTouch(this.stage, TouchPhase.BEGAN);
-			if (!touch)
+			if (touch == null)
 			{
 				// Only interested in BEGAN:
 				return;

@@ -51,9 +51,9 @@ package feathers.controls
 				}
 				validate();
 			}
-			if (textEditor is ITouchKeyboardTextEditor)
+			if (textEditor is ITouchKeyboardTextInput)
 			{
-				(textEditor as ITouchKeyboardTextEditor).touchKeyboard_keyboardEventHandler(event);
+				(textEditor as ITouchKeyboardTextInput).touchKeyboard_keyDownHandler(event);
 			}
 		}
 

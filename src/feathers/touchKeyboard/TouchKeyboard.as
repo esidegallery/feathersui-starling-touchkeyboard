@@ -764,13 +764,7 @@ package feathers.touchKeyboard
 			{
 				selectedLayoutID = String(keyData.additionalData);
 			}
-			else if (charCode)
-			{
-				// To simulate a physical key press, we dispatch a KEY_DOWN and KEY_UP event in succession:
-				dispatchKeyboardEvent(KeyboardEvent.KEY_DOWN, charCode, keyCode, KeyLocation.STANDARD);
-				dispatchKeyboardEvent(KeyboardEvent.KEY_UP, charCode, keyCode, KeyLocation.STANDARD);
-			}
-			else if (keyCode)
+			else if (charCode > 0 || keyCode > 0)
 			{
 				// To simulate a physical key press, we dispatch a KEY_DOWN and KEY_UP event in succession:
 				dispatchKeyboardEvent(KeyboardEvent.KEY_DOWN, charCode, keyCode, KeyLocation.STANDARD);

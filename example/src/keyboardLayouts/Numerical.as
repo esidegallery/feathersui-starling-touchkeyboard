@@ -1,6 +1,5 @@
 package keyboardLayouts
 {
-	import feathers.layout.HorizontalAlign;
 	import feathers.touchKeyboard.data.GapData;
 	import feathers.touchKeyboard.data.IRenderableData;
 	import feathers.touchKeyboard.data.KeyData;
@@ -36,35 +35,37 @@ package keyboardLayouts
 					KeyData.createNonCharacterKey(null, Keyboard.BACKSPACE, 1.25, true, backspaceIcon, backspaceDownIcon)
 				]),
 				new RowData(new <IRenderableData>[
+					new GapData(0, true),
 					KeyData.createCharacterKey("/".charCodeAt(), false, "\\".charCodeAt()),
 					KeyData.createCharacterKey(":".charCodeAt(), false, "|".charCodeAt()),
 					KeyData.createCharacterKey(";".charCodeAt(), false, "~".charCodeAt()),
 					KeyData.createCharacterKey("(".charCodeAt(), false, "<".charCodeAt()),
 					KeyData.createCharacterKey(")".charCodeAt(), false, ">".charCodeAt()),
-					KeyData.createCharacterKey("£".charCodeAt(), false, "€".charCodeAt()),
-					KeyData.createCharacterKey("&".charCodeAt(), false, "$".charCodeAt()),
+					KeyData.createCharacterKey("£".charCodeAt(), false, "$".charCodeAt()),
+					KeyData.createCharacterKey("&".charCodeAt(), false, "€".charCodeAt()),
 					KeyData.createCharacterKey("@".charCodeAt(), false, "¥".charCodeAt()),
-					KeyData.createCharacterKey("\"".charCodeAt(), false, "∘".charCodeAt()),
-					KeyData.createNonCharacterKey(null, Keyboard.ENTER, 1.5, false, returnIcon, returnDownIcon)
+					new GapData,
+					KeyData.createNonCharacterKey(null, Keyboard.ENTER, 2, false, returnIcon, returnDownIcon)
 				]),
 				new RowData(new <IRenderableData>[
-					KeyData.createToggleKey(null, Keyboard.SHIFT, 1, false, shiftIcon, shiftDownIcon, shiftSelectedIcon),
-					new GapData(),
+					KeyData.createToggleKey(null, Keyboard.SHIFT, 1, true, shiftIcon, shiftDownIcon, shiftSelectedIcon),
+					new GapData,
+					KeyData.createCharacterKey("-".charCodeAt()),
+					KeyData.createCharacterKey("_".charCodeAt()),
 					KeyData.createCharacterKey("?".charCodeAt()),
 					KeyData.createCharacterKey("!".charCodeAt()),
 					KeyData.createCharacterKey("'".charCodeAt()),
 					KeyData.createCharacterKey("\"".charCodeAt()),
 					KeyData.createCharacterKey(",".charCodeAt()),
-					new GapData(),
-					KeyData.createToggleKey(null, Keyboard.SHIFT, 1.5, true, shiftIcon, shiftDownIcon, shiftSelectedIcon)
+					KeyData.createCharacterKey(".".charCodeAt()),
+					KeyData.createToggleKey(null, Keyboard.SHIFT, 1, false, shiftIcon, shiftDownIcon, shiftSelectedIcon)
 				]),
 				new RowData(new <IRenderableData>[
-					KeyData.createSwitchLayoutKey("ABC", Qwerty.ID, 1.5),
-					KeyData.createCharacterKey("-".charCodeAt(), false, "_".charCodeAt()),
+					KeyData.createSwitchLayoutKey("ABC", Qwerty.ID, 1.75),
+					new GapData,
 					KeyData.createSpaceBar(5, true),
-					KeyData.createCharacterKey(".".charCodeAt(), false, "@".charCodeAt()),
-					KeyData.createCharacterKey("?".charCodeAt(), false, "!".charCodeAt()),
-					KeyData.createNonCharacterKey(null, TouchKeyboardKeyCode.CLOSE_KEYBOARD, 1.5, false, closeKeyboardIcon, closeKeyboardDownIcon)
+					new GapData,
+					KeyData.createNonCharacterKey(null, TouchKeyboardKeyCode.CLOSE_KEYBOARD, 1.75, false, closeKeyboardIcon, closeKeyboardDownIcon)
 				])
 			]);
 		}

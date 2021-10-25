@@ -1,6 +1,5 @@
 package keyboardLayouts
 {
-	import feathers.layout.HorizontalAlign;
 	import feathers.touchKeyboard.data.GapData;
 	import feathers.touchKeyboard.data.IRenderableData;
 	import feathers.touchKeyboard.data.KeyData;
@@ -49,8 +48,7 @@ package keyboardLayouts
 					KeyData.createNonCharacterKey(null, Keyboard.ENTER, 1.75, false, returnIcon, returnDownIcon)
 				]),
 				new RowData(new <IRenderableData>[
-					KeyData.createToggleKey(null, Keyboard.SHIFT, 1, false, shiftIcon, shiftDownIcon, shiftSelectedIcon),
-					new GapData(),
+					KeyData.createToggleKey(null, Keyboard.SHIFT, 1, true, shiftIcon, shiftDownIcon, shiftSelectedIcon),
 					KeyData.createCharacterKey("Z".charCodeAt(), true),
 					KeyData.createCharacterKey("X".charCodeAt(), true),
 					KeyData.createCharacterKey("C".charCodeAt(), true),
@@ -58,17 +56,16 @@ package keyboardLayouts
 					KeyData.createCharacterKey("B".charCodeAt(), true),
 					KeyData.createCharacterKey("N".charCodeAt(), true),
 					KeyData.createCharacterKey("M".charCodeAt(), true),
-					KeyData.createCharacterKey(",".charCodeAt(), false, ":".charCodeAt()),
-					new GapData(),
-					KeyData.createToggleKey(null, Keyboard.SHIFT, 1.5, true, shiftIcon, shiftDownIcon, shiftSelectedIcon)
+					KeyData.createCharacterKey(",".charCodeAt()),
+					KeyData.createCharacterKey(".".charCodeAt()),
+					KeyData.createToggleKey(null, Keyboard.SHIFT, 1, false, shiftIcon, shiftDownIcon, shiftSelectedIcon)
 				]),
 				new RowData(new <IRenderableData>[
-					KeyData.createSwitchLayoutKey("&123", Numerical.ID, 1.5),
-					KeyData.createCharacterKey("-".charCodeAt(), false, "_".charCodeAt()),
+					KeyData.createSwitchLayoutKey("&123", Numerical.ID, 1.75),
+					new GapData,
 					KeyData.createSpaceBar(5, true),
-					KeyData.createCharacterKey(".".charCodeAt(), false, "@".charCodeAt()),
-					KeyData.createCharacterKey("?".charCodeAt(), false, "!".charCodeAt()),
-					KeyData.createNonCharacterKey(null, TouchKeyboardKeyCode.CLOSE_KEYBOARD, 1.5, false, closeKeyboardIcon, closeKeyboardDownIcon)
+					new GapData,
+					KeyData.createNonCharacterKey(null, TouchKeyboardKeyCode.CLOSE_KEYBOARD, 1.75, false, closeKeyboardIcon, closeKeyboardDownIcon)
 				])
 			]);
 		}
