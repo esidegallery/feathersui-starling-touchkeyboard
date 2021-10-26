@@ -321,7 +321,7 @@ package feathers.touchKeyboard
 		}
 		public function set selectedLayoutID(value:String):void
 		{
-			if (!_layouts)
+			if (_layouts == null || _layouts.length == 0)
 			{
 				return;
 			}
@@ -333,6 +333,7 @@ package feathers.touchKeyboard
 					return;
 				}
 			}
+			selectedLayoutIndex = 0;
 		}
 
 		private var _keyRendererType:Class = KeyRenderer;
