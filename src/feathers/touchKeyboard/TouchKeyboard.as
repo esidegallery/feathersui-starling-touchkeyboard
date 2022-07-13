@@ -780,16 +780,12 @@ package feathers.touchKeyboard
 					case Keyboard.CONTROL :
 					case Keyboard.SHIFT :
 					case TouchKeyboardKeyCode.CLOSE_KEYBOARD :
-						{
-							break;
-						}
+						break;
 					default :
-						{
-							shift = false;
-							alt = false;
-							ctrl = false;
-							command = false;
-						}
+						shift = false;
+						alt = false;
+						ctrl = false;
+						command = false;
 				}
 			}
 		}
@@ -813,30 +809,20 @@ package feathers.touchKeyboard
 				switch (keyData.keyCode)
 				{
 					case Keyboard.CAPS_LOCK :
-						{
-							capsLock = key.isSelected;
-							break;
-						}
+						capsLock = key.isSelected;
+						break;
 					case Keyboard.SHIFT :
-						{
-							shift = key.isSelected;
-							break;
-						}
+						shift = key.isSelected;
+						break;
 					case Keyboard.CONTROL :
-						{
-							ctrl = key.isSelected;
-							break;
-						}
+						ctrl = key.isSelected;
+						break;
 					case Keyboard.ALTERNATE :
-						{
-							alt = key.isSelected;
-							break;
-						}
+						alt = key.isSelected;
+						break;
 					case Keyboard.COMMAND :
-						{
-							command = key.isSelected;
-							break;
-						}
+						command = key.isSelected;
+						break;
 				}
 			}
 			else if (key.isSelected)
