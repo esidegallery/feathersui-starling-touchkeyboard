@@ -39,6 +39,7 @@ package feathers.touchKeyboard
 		public static const FACTORY_ID_GAP:String = "touch-keyboard-gap-id";
 		public static const FACTORY_ID_ALTERNATE_KEY:String = "touch-keyboard-alternate-key-id";
 
+		// Convenience style names for use in key renderers:
 		public static const STYLE_NAME_ALTERNATE_KEY:String = "touch-keyboard-alternate-key-style";
 		public static const STYLE_NAME_SPACE_BAR:String = "touch-keyboard-space-bar-style";
 		public static const STYLE_NAME_BACKSPACE_KEY:String = "touch-keyboard-backspace-key-style";
@@ -293,9 +294,11 @@ package feathers.touchKeyboard
 				return;
 			}
 			_layouts = value;
-			if (_layouts && _layouts.length)
+			invalidate(INVALIDATION_FLAG_DATA);
+			if (_layouts != null && _layouts.length > 0)
 			{
-				selectedLayoutIndex = 0;
+				_selectedLayoutIndex = 0;
+				super.dataProvider = new VectorCollection(_layouts[_selectedLayoutIndex].rows);
 			}
 			else
 			{

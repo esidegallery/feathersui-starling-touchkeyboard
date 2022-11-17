@@ -17,7 +17,7 @@ package feathers.touchKeyboard
 	public class KeyRenderer extends BaseDefaultItemRenderer implements IKeyRenderer
 	{
 		public static var globalStyleProvider:IStyleProvider;
-		
+
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
 			if (KeyRenderer.globalStyleProvider)
@@ -32,23 +32,23 @@ package feathers.touchKeyboard
 		}
 
 		protected var _index:int = -1;
-        public function get index():int
-        {
-            return _index;
-        }
-        public function set index(value:int):void
-        {
-            _index = value;
-        }
+		public function get index():int
+		{
+			return _index;
+		}
+		public function set index(value:int):void
+		{
+			_index = value;
+		}
 
-        public function get owner():List
-        {
-            return List(_owner);
-        }
-        public function set owner(value:List):void
-        {
-            _owner = value;
-        }
+		public function get owner():List
+		{
+			return List(_owner);
+		}
+		public function set owner(value:List):void
+		{
+			_owner = value;
+		}
 
 		public function get keyData():KeyData
 		{
@@ -57,15 +57,15 @@ package feathers.touchKeyboard
 
 		override public function hitTest(localPoint:Point):DisplayObject
 		{
-			if(!this.visible || !this.touchable)
+			if (!visible || !touchable)
 			{
 				return null;
 			}
-			if(this.mask && !this.hitTestMask(localPoint))
+			if (mask && !hitTestMask(localPoint))
 			{
 				return null;
 			}
-			return this._hitArea.containsPoint(localPoint) ? this : null;
+			return _hitArea.containsPoint(localPoint) ? this : null;
 		}
 
 		override protected function initialize():void

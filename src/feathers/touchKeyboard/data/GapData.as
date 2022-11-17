@@ -1,11 +1,11 @@
 package feathers.touchKeyboard.data
 {
-    import feathers.touchKeyboard.TouchKeyboard;
+	import feathers.touchKeyboard.TouchKeyboard;
 
-    import mx.utils.StringUtil;
+	import mx.utils.StringUtil;
 
-    public class GapData implements IRenderableData
-    {
+	public class GapData implements IRenderableData
+	{
 		protected var _widthInUnits:Number;
 		public function get widthInUnits():Number
 		{
@@ -45,5 +45,5 @@ package feathers.touchKeyboard.data
 		{
 			return StringUtil.substitute("[GapData(widthInUnits={0}, isFlexible={1})]", _widthInUnits, _flexibleWidth);
 		}
-    }
+	}
 }
