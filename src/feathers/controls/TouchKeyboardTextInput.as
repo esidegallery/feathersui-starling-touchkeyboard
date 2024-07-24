@@ -1,6 +1,7 @@
 package feathers.controls
 {
 	import feathers.controls.TextInput;
+	import feathers.core.ITextEditor;
 	import feathers.touchKeyboard.TouchKeyboard;
 
 	import starling.events.Event;
@@ -11,6 +12,15 @@ package feathers.controls
 
 	public class TouchKeyboardTextInput extends TextInput
 	{
+		public function TouchKeyboardTextInput()
+		{
+			_textEditorFactory = function():ITextEditor
+			{
+				// Currently, only TextBlockTextEditor has been extended for TouchKeyboard support:
+				return new TouchKeyboardTextBlockTextEditor;
+			};
+		}
+
 		private var _touchKeyboard:TouchKeyboard;
 		public function get touchKeyboard():TouchKeyboard
 		{
