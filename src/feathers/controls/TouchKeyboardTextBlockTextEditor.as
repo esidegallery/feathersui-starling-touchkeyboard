@@ -15,19 +15,19 @@ package feathers.controls
 	import starling.events.TouchPhase;
 	import starling.utils.Pool;
 
-	public class TouchKeyboardTextBlockTextEditor extends TextBlockTextEditor implements ITouchKeyboardTextInput
+	public class TouchKeyboardTextBlockTextEditor extends TextBlockTextEditor implements ITouchKeyboardTextEditor
 	{
 		public function touchKeyboard_keyDownHandler(event:KeyboardEvent):void
 		{
-			if (event == null)
-			{
-				return;
-			}
 			stage_keyDownHandler(event);
-			if (event.ctrlKey || event.altKey)
+
+			if (!_isEnabled || !_isEditable ||
+					event.ctrlKey || event.altKey || event.isDefaultPrevented() ||
+					touchPointID >= 0)
 			{
 				return;
 			}
+
 			if (event.charCode > 0)
 			{
 				var char:String = String.fromCharCode(event.charCode);

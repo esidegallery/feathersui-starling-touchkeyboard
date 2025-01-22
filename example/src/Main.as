@@ -1,18 +1,24 @@
 package
 {
 	import feathers.controls.ButtonState;
+	import feathers.controls.ITouchKeyboardInput;
 	import feathers.controls.LayoutGroup;
+	import feathers.controls.TouchKeyboardTextArea;
 	import feathers.controls.TouchKeyboardTextInput;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.core.Application;
+	import feathers.core.FocusManager;
+	import feathers.core.IFocusManager;
 	import feathers.core.ITextRenderer;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
+	import feathers.layout.VerticalLayout;
 	import feathers.skins.ImageSkin;
 	import feathers.text.BitmapFontTextFormat;
-	import feathers.themes.TopcoatLightMobileTheme;
 	import feathers.touchKeyboard.KeyRenderer;
 	import feathers.touchKeyboard.TouchKeyboard;
 	import feathers.touchKeyboard.data.KeyboardLayoutData;
@@ -28,6 +34,7 @@ package
 	import starling.animation.Transitions;
 	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.events.Event;
 	import starling.text.BitmapFont;
 	import starling.text.TextFormat;
 	import starling.textures.Texture;
@@ -52,6 +59,7 @@ package
 	
 		protected var textInputGroup:LayoutGroup;
 		protected var textInput:TouchKeyboardTextInput;
+		protected var textArea:TouchKeyboardTextArea;
 		protected var touchKeyboard:TouchKeyboard;
 		protected var touchKeyboardTweenID:int;
 
@@ -71,14 +79,18 @@ package
 
 		public function Main()
 		{
-			new TopcoatLightMobileTheme;
+			new TopcoatLightMobileThemeMod;
 			Starling.current.showStats = true;
+
 			super();
 		}
 
 		override protected function initialize():void
 		{
 			layout = new AnchorLayout;
+
+			FocusManager.setEnabledForStage(stage, true);
+			FocusManager.getFocusManagerForStage(stage).addEventListener(Event.CHANGE, focusManager_changeHandler);
 
 			var atlasTexture:Texture = Texture.fromEmbeddedAsset(ATLAS_BITMAP);
 			var atlasXML:XML = XML(new ATLAS_XML);
@@ -89,25 +101,25 @@ package
 			font = new BitmapFont(fontTexture, fontXML);
 
 			textInputGroup = new LayoutGroup;
-			textInputGroup.layout = new AnchorLayout;
-			textInputGroup.layoutData = new AnchorLayoutData(0, 0, 0, 0);
+
+			var vl:VerticalLayout = new VerticalLayout;
+			vl.horizontalAlign = HorizontalAlign.JUSTIFY;
+			vl.verticalAlign = VerticalAlign.MIDDLE;
+			vl.gap = 15;
+			textInputGroup.layout = vl;
+			textInputGroup.layoutData = new AnchorLayoutData(20, 150, 20, 150);
 			addChild(textInputGroup);
 
-			textInput = new TouchKeyboardTextInput;
-			textInput.setSize(500, 64);
-			textInput.fontStyles = new TextFormat("_sans", 40, Color.BLACK, Align.LEFT);
+			var textFormat:TextFormat = new TextFormat("_sans", 40, Color.BLACK, Align.LEFT);
 
-			textInput.layoutData = new AnchorLayoutData(NaN, NaN, NaN, NaN, 0, 0);
+			textInput = new TouchKeyboardTextInput;
+			textInput.fontStyles = textFormat;
 			textInputGroup.addChild(textInput);
 
-			textInput.addEventListener(FeathersEventType.FOCUS_IN, function():void
-			{
-				showKeyboard = true;
-			});
-			textInput.addEventListener(FeathersEventType.FOCUS_OUT, function():void
-			{
-				showKeyboard = false;
-			});
+			textArea = new TouchKeyboardTextArea;
+			textArea.fontStyles = textFormat;
+			textArea.paddingLeft = textInput.paddingLeft - 10; // Fixing misalignment in theme.
+			textInputGroup.addChild(textArea);
 
 			super.initialize();
 		}
@@ -215,6 +227,7 @@ package
 			];
 
 			textInput.touchKeyboard = touchKeyboard;
+			textArea.touchKeyboard = touchKeyboard;
 
 			touchKeyboard.addEventListener(TouchKeyboardEventType.CLOSE_REQUESTED, closeTouchKeyboard);
 			touchKeyboard.layoutData = new AnchorLayoutData(this.height, 0, NaN, 0);
@@ -264,6 +277,12 @@ package
 					}
 				});
 			}
+		}
+
+		private function focusManager_changeHandler(event:Event):void
+		{
+			var focusManager:IFocusManager = event.currentTarget as IFocusManager;
+			showKeyboard = focusManager.focus is ITouchKeyboardInput;
 		}
 	}
 }

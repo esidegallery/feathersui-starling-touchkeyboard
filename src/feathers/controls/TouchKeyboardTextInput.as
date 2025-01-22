@@ -10,17 +10,8 @@ package feathers.controls
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 
-	public class TouchKeyboardTextInput extends TextInput
+	public class TouchKeyboardTextInput extends TextInput implements ITouchKeyboardInput
 	{
-		public function TouchKeyboardTextInput()
-		{
-			_textEditorFactory = function():ITextEditor
-			{
-				// Currently, only TextBlockTextEditor has been extended for TouchKeyboard support:
-				return new TouchKeyboardTextBlockTextEditor;
-			};
-		}
-
 		private var _touchKeyboard:TouchKeyboard;
 		public function get touchKeyboard():TouchKeyboard
 		{
@@ -28,7 +19,7 @@ package feathers.controls
 		}
 		public function set touchKeyboard(value:TouchKeyboard):void
 		{
-			if (_touchKeyboard)
+			if (_touchKeyboard != null)
 			{
 				_touchKeyboard.removeEventListener(TouchEvent.TOUCH, touchKeyboard_touchHandler);
 				_touchKeyboard.removeEventListener(KeyboardEvent.KEY_DOWN, touchKeyboard_keyDownHandler);
@@ -36,7 +27,7 @@ package feathers.controls
 			}
 			_maintainTouchFocus = false;
 			_touchKeyboard = value;
-			if (_touchKeyboard)
+			if (_touchKeyboard != null)
 			{
 				_touchKeyboard.addEventListener(TouchEvent.TOUCH, touchKeyboard_touchHandler);
 				_touchKeyboard.addEventListener(KeyboardEvent.KEY_DOWN, touchKeyboard_keyDownHandler);
@@ -52,6 +43,14 @@ package feathers.controls
 				return true;
 			}
 			return super.maintainTouchFocus;
+		}
+
+		public function TouchKeyboardTextInput()
+		{
+			_textEditorFactory = function():ITextEditor
+			{
+				return new TouchKeyboardTextBlockTextEditor;
+			};
 		}
 
 		protected function touchKeyboard_touchHandler(event:TouchEvent):void
@@ -81,9 +80,9 @@ package feathers.controls
 			{
 				return;
 			}
-			if (textEditor is ITouchKeyboardTextInput)
+			if (textEditor is ITouchKeyboardTextEditor)
 			{
-				(textEditor as ITouchKeyboardTextInput).touchKeyboard_keyDownHandler(event);
+				(textEditor as ITouchKeyboardTextEditor).touchKeyboard_keyDownHandler(event);
 			}
 		}
 
