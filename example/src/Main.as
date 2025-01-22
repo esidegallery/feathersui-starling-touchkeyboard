@@ -137,7 +137,7 @@ package
 				createTouchKeyboard();
 				touchKeyboard.addEventListener(FeathersEventType.CREATION_COMPLETE, function():void
 				{
-					setTimeout(openTouchKeyboard, 200);
+					setTimeout(openTouchKeyboard, 100);
 				});
 				touchKeyboard.validate();
 			}
@@ -149,7 +149,7 @@ package
 
 		protected function createTouchKeyboard():void
 		{
-			if (touchKeyboard !== null)
+			if (touchKeyboard != null)
 			{
 				return;
 			}
@@ -197,7 +197,7 @@ package
 			});
 
 			touchKeyboard.backgroundSkin = new Image(atlas.getTexture("background"));
-			touchKeyboard.minimumKeyUnitSize = 82;
+			touchKeyboard.minimumKeyUnitSize = 75;
 
 			touchKeyboard.layouts = new <KeyboardLayoutData>[
 				new Qwerty(
@@ -228,7 +228,7 @@ package
 
 		protected function destroyTouchKeyboard():void
 		{
-			if (touchKeyboard !== null)
+			if (touchKeyboard != null)
 			{
 				touchKeyboard.removeFromParent(true);
 				touchKeyboard = null;
@@ -243,7 +243,7 @@ package
 			var topTo:Number = height - touchKeyboard.height;
 			if (ald.top > topTo)
 			{
-				Starling.juggler.tween(ald, 0.6, {
+				Starling.juggler.tween(ald, 0.4, {
 					top: topTo,
 					transition: Transitions.EASE_OUT
 				});
