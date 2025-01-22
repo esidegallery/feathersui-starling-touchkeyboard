@@ -31,11 +31,14 @@ package feathers.controls
 			if (event.charCode > 0)
 			{
 				var char:String = String.fromCharCode(event.charCode);
-				nativeFocus_textInputHandler(new TextEvent(TextEvent.TEXT_INPUT, false, true, char));
 			}
 			else if (event.keyCode == Keyboard.ENTER)
 			{
-				nativeFocus_textInputHandler(new TextEvent(TextEvent.TEXT_INPUT, false, true, "\n"));
+				char = "\n";
+			}
+			if (char)
+			{
+				nativeFocus_textInputHandler(new TextEvent(TextEvent.TEXT_INPUT, false, true, char));
 			}
 		}
 
