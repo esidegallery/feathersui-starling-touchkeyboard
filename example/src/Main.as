@@ -1,7 +1,6 @@
 package
 {
 	import feathers.controls.ButtonState;
-	import feathers.controls.ITouchKeyboardInput;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.TouchKeyboardTextArea;
 	import feathers.controls.TouchKeyboardTextInput;
@@ -11,6 +10,7 @@ package
 	import feathers.core.FocusManager;
 	import feathers.core.IFocusManager;
 	import feathers.core.ITextRenderer;
+	import feathers.core.TouchKeyboardFocusManager;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -19,6 +19,7 @@ package
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.ImageSkin;
 	import feathers.text.BitmapFontTextFormat;
+	import feathers.touchKeyboard.ITouchKeyboardInput;
 	import feathers.touchKeyboard.KeyRenderer;
 	import feathers.touchKeyboard.TouchKeyboard;
 	import feathers.touchKeyboard.data.KeyboardLayoutData;
@@ -33,6 +34,7 @@ package
 
 	import starling.animation.Transitions;
 	import starling.core.Starling;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.text.BitmapFont;
@@ -89,6 +91,10 @@ package
 		{
 			layout = new AnchorLayout;
 
+			FocusManager.focusManagerFactory = function(root:DisplayObjectContainer):IFocusManager
+				{
+					return new TouchKeyboardFocusManager(root);
+				}
 			FocusManager.setEnabledForStage(stage, true);
 			FocusManager.getFocusManagerForStage(stage).addEventListener(Event.CHANGE, focusManager_changeHandler);
 
@@ -226,9 +232,6 @@ package
 				),
 			];
 
-			textInput.touchKeyboard = touchKeyboard;
-			textArea.touchKeyboard = touchKeyboard;
-
 			touchKeyboard.addEventListener(TouchKeyboardEventType.CLOSE_REQUESTED, closeTouchKeyboard);
 			touchKeyboard.layoutData = new AnchorLayoutData(this.height, 0, NaN, 0);
 			touchKeyboard.paddingLeft = 50;
@@ -245,8 +248,6 @@ package
 			{
 				touchKeyboard.removeFromParent(true);
 				touchKeyboard = null;
-				textInput.touchKeyboard = null;
-				(textInputGroup.layoutData as AnchorLayoutData).bottomAnchorDisplayObject = null;
 			}
 		}
 
