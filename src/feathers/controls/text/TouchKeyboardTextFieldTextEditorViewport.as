@@ -1,13 +1,14 @@
-package feathers.controls
+package feathers.controls.text
 {
 	import feathers.controls.text.TextFieldTextEditorViewPort;
+	import feathers.touchKeyboard.ITouchKeyboardInput;
 	import feathers.utils.text.TextInputRestrict;
 
 	import flash.ui.Keyboard;
 
 	import starling.events.KeyboardEvent;
 
-	public class TouchKeyboardTextFieldTextEditorViewport extends TextFieldTextEditorViewPort implements ITouchKeyboardTextEditor
+	public class TouchKeyboardTextFieldTextEditorViewport extends TextFieldTextEditorViewPort implements ITouchKeyboardInput
 	{
 		protected var textInputRestrict:TextInputRestrict;
 

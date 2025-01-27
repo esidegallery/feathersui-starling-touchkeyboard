@@ -6,6 +6,8 @@ package feathers.touchKeyboard
 	import feathers.controls.ToggleButton;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
+	import feathers.core.FocusManager;
+	import feathers.core.IFocusManager;
 	import feathers.data.IListCollection;
 	import feathers.data.VectorCollection;
 	import feathers.events.FeathersEventType;
@@ -403,10 +405,10 @@ package feathers.touchKeyboard
 
 		protected var _keyRendererFactories:Object = {
 				"touch-keyboard-gap-id": function():IListItemRenderer
-			{
-				return new GapRenderer;
-			}
-		};
+				{
+					return new GapRenderer;
+				}
+			};
 
 		protected var _rowRenderers:Dictionary;
 		protected var _keyRenderers:Dictionary;
@@ -554,14 +556,14 @@ package feathers.touchKeyboard
 
 			// Find the widest row size:
 			var widestRowSize:Number = 0;
-			for (var i:int = 0, l:int = _dataProvider ? _dataProvider.length :0; i < l; i++)
+			for (var i:int = 0, l:int = _dataProvider ? _dataProvider.length : 0; i < l; i++)
 			{
-				var rowData :RowData = _dataProvider.getItemAt(i) as RowData;
-				var rowWidth :Number = 0;
+				var rowData:RowData = _dataProvider.getItemAt(i) as RowData;
+				var rowWidth:Number = 0;
 				if (rowData)
 				{
 					rowWidth = (rowData.items.length - 1) * _horizontalGapInUnits;
-					for each (var renderable :IRenderableData in rowData.items)
+					for each (var renderable:IRenderableData in rowData.items)
 					{
 						rowWidth += renderable.widthInUnits;
 					}
@@ -571,7 +573,7 @@ package feathers.touchKeyboard
 					widestRowSize = rowWidth;
 				}
 			}
-			for (var renderer :Object in _rowRenderers)
+			for (var renderer:Object in _rowRenderers)
 			{
 				updateRowRenderer(renderer as RowRenderer, widestRowSize * _actualKeyUnitSize);
 			}
@@ -582,7 +584,7 @@ package feathers.touchKeyboard
 		}
 
 		/** We want the HitTest to either return a KeyRenderer, this or nowt. */
-		override public function hitTest(localPoint :Point) :DisplayObject
+		override public function hitTest(localPoint:Point):DisplayObject
 		{
 			if (!this.visible || !this.touchable)
 			{
@@ -592,7 +594,7 @@ package feathers.touchKeyboard
 			{
 				return null;
 			}
-			var result :DisplayObject = super.hitTest(localPoint);
+			var result:DisplayObject = super.hitTest(localPoint);
 			if (result is KeyRenderer)
 			{
 				return result;
@@ -601,7 +603,7 @@ package feathers.touchKeyboard
 		}
 
 		/** Updates the renderer properties & layout. */
-		protected function updateRowRenderer(renderer :RowRenderer, rowWidth :Number) :void
+		protected function updateRowRenderer(renderer:RowRenderer, rowWidth:Number):void
 		{
 			if (!renderer)
 			{
@@ -617,29 +619,29 @@ package feathers.touchKeyboard
 				return;
 			}
 
-			var rowData :RowData = renderer.data as RowData;
-			var rendererHeight :Number = rowData.heightInUnits * _actualKeyUnitSize;
-			var gap :Number = _horizontalGapInUnits * _actualKeyUnitSize;
+			var rowData:RowData = renderer.data as RowData;
+			var rendererHeight:Number = rowData.heightInUnits * _actualKeyUnitSize;
+			var gap:Number = _horizontalGapInUnits * _actualKeyUnitSize;
 			renderer.height = _snapToPixels ? Math.round(rendererHeight) : rendererHeight;
 			(renderer.layout as HorizontalLayout).gap = _snapToPixels ? Math.round(gap) : gap;
 			renderer.width = rowWidth;
 		}
 
-		protected function sizeKeyRenderer(renderer :IListItemRenderer) :void
+		protected function sizeKeyRenderer(renderer:IListItemRenderer):void
 		{
 			if (!renderer || !_actualKeyUnitSize)
 			{
 				return;
 			}
 
-			var renderableData :IRenderableData = renderer.data as IRenderableData;
+			var renderableData:IRenderableData = renderer.data as IRenderableData;
 			if (!renderableData)
 			{
 				return;
 				// throw new Error("Key renderer data must implement IRenderableData");
 			}
-			var rendererLayoutData :HorizontalLayoutData = (renderer as FeathersControl).layoutData as HorizontalLayoutData;
-			var rendererWidth :Number = renderableData.widthInUnits * _actualKeyUnitSize;
+			var rendererLayoutData:HorizontalLayoutData = (renderer as FeathersControl).layoutData as HorizontalLayoutData;
+			var rendererWidth:Number = renderableData.widthInUnits * _actualKeyUnitSize;
 			if (snapToPixels)
 			{
 				rendererWidth = Math.round(rendererWidth);
@@ -660,13 +662,13 @@ package feathers.touchKeyboard
 			}
 		}
 
-		private function updateRendererMinTouchSizes() :void
+		private function updateRendererMinTouchSizes():void
 		{
 			if (_actualKeyUnitSize !== _actualKeyUnitSize) // isNaN
 			{
 				return;
 			}
-			for (var renderer :Object in _rowRenderers)
+			for (var renderer:Object in _rowRenderers)
 			{
 				if (!(renderer is RowRenderer))
 				{
@@ -685,12 +687,33 @@ package feathers.touchKeyboard
 			}
 		}
 
-		protected function dispatchKeyboardEvent(type :String, charCode :uint, keyCode :uint, keyLocation :int) :void
+		protected function dispatchKeyboardEvent(type:String, charCode:uint, keyCode:uint, keyLocation:int):void
 		{
-			dispatchEvent(new KeyboardEvent(type, charCode, keyCode, keyLocation, _ctrl, _alt, _shift));
+			var event:KeyboardEvent = new KeyboardEvent(type, charCode, keyCode, keyLocation, _ctrl, _alt, _shift);
+			if (type == KeyboardEvent.KEY_DOWN)
+			{
+				// If the focused control is a touch keyboard input, call the event handler directly:
+				var focusManager:IFocusManager = FocusManager.getFocusManagerForStage(stage);
+				if (focusManager != null && focusManager.focus is ITouchKeyboardInput)
+				{
+					(focusManager.focus as ITouchKeyboardInput).touchKeyboard_keyDownHandler(event);
+				}
+			}
+			dispatchEvent(event);
 		}
 
-		protected function rowRendererAddHandler(event :Event, renderer :RowRenderer) :void
+		override protected function feathersControl_removedFromStageHandler(event:Event):void
+		{
+			// If the focused control is a touch keyboard input, clear the focus:
+			var focusManager:IFocusManager = FocusManager.getFocusManagerForStage(stage);
+			if (focusManager != null && focusManager.focus is ITouchKeyboardInput)
+			{
+				focusManager.focus = null;
+			}
+			super.feathersControl_removedFromStageHandler(event);
+		}
+
+		protected function rowRendererAddHandler(event:Event, renderer:RowRenderer):void
 		{
 			_rowRenderers[renderer] = true;
 			renderer.addEventListener(FeathersEventType.RENDERER_ADD, keyRendererAddHandler);
@@ -699,14 +722,14 @@ package feathers.touchKeyboard
 			updateRowRenderer(renderer, NaN);
 		}
 
-		protected function rowRendererRemoveHandler(event :Event, renderer :RowRenderer) :void
+		protected function rowRendererRemoveHandler(event:Event, renderer:RowRenderer):void
 		{
 			delete _rowRenderers[renderer];
 			renderer.removeEventListener(FeathersEventType.RENDERER_ADD, keyRendererAddHandler);
 			renderer.removeEventListener(FeathersEventType.RENDERER_REMOVE, keyRendererRemoveHandler);
 		}
 
-		protected function keyRendererAddHandler(event :Event, renderer :IListItemRenderer) :void
+		protected function keyRendererAddHandler(event:Event, renderer:IListItemRenderer):void
 		{
 			if (!(renderer is FeathersControl))
 			{
@@ -721,7 +744,7 @@ package feathers.touchKeyboard
 			_keyRenderers[renderer] = true;
 			renderer.owner = this;
 
-			var keyRenderer :FeathersControl = renderer as FeathersControl;
+			var keyRenderer:FeathersControl = renderer as FeathersControl;
 			keyRenderer.layoutData = new HorizontalLayoutData;
 			if (!(renderer is GapRenderer))
 			{
@@ -735,7 +758,7 @@ package feathers.touchKeyboard
 			sizeKeyRenderer(renderer);
 		}
 
-		protected function keyRendererRemoveHandler(event :Event, renderer :IListItemRenderer) :void
+		protected function keyRendererRemoveHandler(event:Event, renderer:IListItemRenderer):void
 		{
 			if (renderer is ToggleButton)
 			{
@@ -746,18 +769,18 @@ package feathers.touchKeyboard
 			delete _keyRenderers[renderer];
 		}
 
-		protected function key_triggeredHandler(event :Event) :void
+		protected function key_triggeredHandler(event:Event):void
 		{
-			var key :ToggleButton = event.currentTarget as ToggleButton;
-			var keyData :KeyData = (event.currentTarget as IListItemRenderer).data as KeyData;
-			var charCode :uint = _shift && keyData.upperCaseCharCode ? keyData.upperCaseCharCode : keyData.charCode;
+			var key:ToggleButton = event.currentTarget as ToggleButton;
+			var keyData:KeyData = (event.currentTarget as IListItemRenderer).data as KeyData;
+			var charCode:uint = _shift && keyData.upperCaseCharCode ? keyData.upperCaseCharCode : keyData.charCode;
 			if (charCode && keyData.caseSensitive)
 			{
-				var charString :String = String.fromCharCode(charCode);
+				var charString:String = String.fromCharCode(charCode);
 				charCode = String(capsLock != shift ? charString.toLocaleUpperCase() : charString.toLocaleLowerCase()).charCodeAt();
 			}
 
-			var keyCode :uint = keyData.keyCode;
+			var keyCode:uint = keyData.keyCode;
 			if (keyCode == TouchKeyboardKeyCode.CLOSE_KEYBOARD)
 			{
 				dispatchEventWith(TouchKeyboardEventType.CLOSE_REQUESTED);
@@ -778,13 +801,13 @@ package feathers.touchKeyboard
 			{
 				switch (keyData.keyCode)
 				{
-					case Keyboard.ALTERNATE :
-					case Keyboard.COMMAND :
-					case Keyboard.CONTROL :
-					case Keyboard.SHIFT :
-					case TouchKeyboardKeyCode.CLOSE_KEYBOARD :
+					case Keyboard.ALTERNATE:
+					case Keyboard.COMMAND:
+					case Keyboard.CONTROL:
+					case Keyboard.SHIFT:
+					case TouchKeyboardKeyCode.CLOSE_KEYBOARD:
 						break;
-					default :
+					default:
 						shift = false;
 						alt = false;
 						ctrl = false;
@@ -793,37 +816,37 @@ package feathers.touchKeyboard
 			}
 		}
 
-		protected function key_longPressHandler(event :Event) :void
+		protected function key_longPressHandler(event:Event):void
 		{
-			var key :ToggleButton = event.currentTarget as ToggleButton;
-			var keyData :KeyData = (event.currentTarget as IListItemRenderer).data as KeyData;
+			var key:ToggleButton = event.currentTarget as ToggleButton;
+			var keyData:KeyData = (event.currentTarget as IListItemRenderer).data as KeyData;
 			if (keyData.variantCharCodes && keyData.variantCharCodes.length)
 			{
 				trace("show variants");
 			}
 		}
 
-		protected function key_changeHandler(event :Event) :void
+		protected function key_changeHandler(event:Event):void
 		{
-			var key :ToggleButton = event.currentTarget as ToggleButton;
-			var keyData :KeyData = (event.currentTarget as IListItemRenderer).data as KeyData;
+			var key:ToggleButton = event.currentTarget as ToggleButton;
+			var keyData:KeyData = (event.currentTarget as IListItemRenderer).data as KeyData;
 			if (keyData.isToggle)
 			{
 				switch (keyData.keyCode)
 				{
-					case Keyboard.CAPS_LOCK :
+					case Keyboard.CAPS_LOCK:
 						capsLock = key.isSelected;
 						break;
-					case Keyboard.SHIFT :
+					case Keyboard.SHIFT:
 						shift = key.isSelected;
 						break;
-					case Keyboard.CONTROL :
+					case Keyboard.CONTROL:
 						ctrl = key.isSelected;
 						break;
-					case Keyboard.ALTERNATE :
+					case Keyboard.ALTERNATE:
 						alt = key.isSelected;
 						break;
-					case Keyboard.COMMAND :
+					case Keyboard.COMMAND:
 						command = key.isSelected;
 						break;
 				}
@@ -836,9 +859,10 @@ package feathers.touchKeyboard
 			}
 		}
 
-		override public function dispose() :void
+		override public function dispose():void
 		{
 			_isDisposing = true;
+
 			super.dispose();
 		}
 	}

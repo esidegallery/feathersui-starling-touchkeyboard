@@ -15,12 +15,12 @@ package feathers.touchKeyboard
     public class RowRenderer extends List implements IListItemRenderer
     {
         public static var globalStyleProvider:IStyleProvider;
-		
-		override protected function get defaultStyleProvider():IStyleProvider
-		{
+
+        override protected function get defaultStyleProvider():IStyleProvider
+        {
             return RowRenderer.globalStyleProvider;
-		}
-        
+        }
+
         protected var _index:int = -1;
         public function get index():int
         {
@@ -54,8 +54,8 @@ package feathers.touchKeyboard
             }
 
             _data = value;
-			
-			if (_data is RowData)
+
+            if (_data is RowData)
             {
                 dataProvider = new VectorCollection((_data as RowData).items);
             }
@@ -81,7 +81,7 @@ package feathers.touchKeyboard
         }
         public function set isSelected(value:Boolean):void
         {
-			// Not selectable.
+            // Not selectable.
         }
 
         internal function set itemRendererFactories(value:Object):void
@@ -89,8 +89,8 @@ package feathers.touchKeyboard
             _itemRendererFactories = value;
         }
 
-		override protected function initialize():void
-		{
+        override protected function initialize():void
+        {
             _factoryIDFunction = function(item:Object):String
             {
                 if (item is IRenderableData)
@@ -98,8 +98,8 @@ package feathers.touchKeyboard
                     return (item as IRenderableData).factoryID;
                 }
                 return null;
-            }
-            
+            };
+
             _clipContent = false;
             _isFocusEnabled = false;
             _isChildFocusEnabled = false;
@@ -107,17 +107,17 @@ package feathers.touchKeyboard
             _interactionMode = ScrollInteractionMode.MOUSE;
             _allowMultipleSelection = true;
 
-			_horizontalScrollPolicy = ScrollPolicy.OFF;
-			_verticalScrollPolicy = ScrollPolicy.OFF;
+            _horizontalScrollPolicy = ScrollPolicy.OFF;
+            _verticalScrollPolicy = ScrollPolicy.OFF;
 
-			var hl:HorizontalLayout = new HorizontalLayout;
-			hl.useVirtualLayout = false;
-			hl.hasVariableItemDimensions = true;
-			hl.horizontalAlign = HorizontalAlign.CENTER;
-			hl.verticalAlign = VerticalAlign.JUSTIFY;
-			_layout = hl;
+            var hl:HorizontalLayout = new HorizontalLayout;
+            hl.useVirtualLayout = false;
+            hl.hasVariableItemDimensions = true;
+            hl.horizontalAlign = HorizontalAlign.CENTER;
+            hl.verticalAlign = VerticalAlign.JUSTIFY;
+            _layout = hl;
 
-			super.initialize();
-		}
+            super.initialize();
+        }
     }
 }

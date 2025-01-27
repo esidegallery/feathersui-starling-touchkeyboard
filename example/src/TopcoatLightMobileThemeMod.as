@@ -26,7 +26,7 @@ package
 
 			textArea.promptFontStyles = this.darkFontStyles.clone();
 			textArea.promptDisabledFontStyles = this.darkDisabledFontStyles.clone();
-			
+
 			textArea.innerPadding = this.smallGutterSize;
 		}
 	}

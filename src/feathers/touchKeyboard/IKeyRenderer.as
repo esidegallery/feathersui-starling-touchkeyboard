@@ -6,10 +6,10 @@ package feathers.touchKeyboard
 	import feathers.layout.ILayoutDisplayObject;
 	import feathers.touchKeyboard.data.KeyData;
 
-	[Event(name="triggered",type="starling.events.Event")]
-	[Event(name="change",type="starling.events.Event")]
-	[Event(name="longPress",type="starling.events.Event")]
-	
+	[Event(name="triggered", type="starling.events.Event")]
+	[Event(name="change", type="starling.events.Event")]
+	[Event(name="longPress", type="starling.events.Event")]
+
 	public interface IKeyRenderer extends IFeathersControl, ILayoutDisplayObject, IListItemRenderer, IToggle
 	{
 		function get isToggle():Boolean;

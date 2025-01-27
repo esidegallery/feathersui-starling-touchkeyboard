@@ -4,9 +4,7 @@ package feathers.touchKeyboard
     import feathers.controls.renderers.IListItemRenderer;
     import feathers.core.FeathersControl;
 
-    /**
-     * The most basic item renderer used to render gaps in keyboard rows.
-     */
+    /** The most basic item renderer used to render gaps in keyboard rows. */
     public class GapRenderer extends FeathersControl implements IListItemRenderer
     {
         protected var _index:int = -1;
@@ -55,14 +53,15 @@ package feathers.touchKeyboard
         }
         public function set isSelected(value:Boolean):void
         {
-			// Not selectable.	
-		}
+            // Not selectable.
+        }
 
         override protected function initialize():void
         {
             visible = false;
             touchable = false;
             _isFocusEnabled = false;
+
             super.initialize();
         }
     }

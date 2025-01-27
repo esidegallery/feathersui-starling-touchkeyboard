@@ -10,14 +10,14 @@ package feathers.touchKeyboard.data
 	public class KeyData implements IRenderableData
 	{
 		public static function createCharacterKey(charCode:uint,
-												  caseSensitive:Boolean = false,
-												  upperCaseCharCode:uint = 0,
-												  widthInUnits:Number = 1,
-												  flexibleWidth:Boolean = false,
-												  iconTexture:Texture = null,
-												  downIconTexture:Texture = null,
-												  styleName:String = null,
-												  factoryID:String = null):KeyData
+				caseSensitive:Boolean = false,
+				upperCaseCharCode:uint = 0,
+				widthInUnits:Number = 1,
+				flexibleWidth:Boolean = false,
+				iconTexture:Texture = null,
+				downIconTexture:Texture = null,
+				styleName:String = null,
+				factoryID:String = null):KeyData
 		{
 			var kd:KeyData = new KeyData;
 			kd.charCode = charCode;
@@ -33,13 +33,13 @@ package feathers.touchKeyboard.data
 		}
 
 		public static function createNonCharacterKey(label:String,
-													 keyCode:uint,
-													 widthInUnits:Number,
-													 flexibleWidth:Boolean = false,
-													 iconTexture:Texture = null,
-													 downIconTexture:Texture = null,
-													 styleName:String = "touch-keyboard-alternate-key-style",
-													 factoryID:String = "touch-keyboard-alternate-key-id"):KeyData
+				keyCode:uint,
+				widthInUnits:Number,
+				flexibleWidth:Boolean = false,
+				iconTexture:Texture = null,
+				downIconTexture:Texture = null,
+				styleName:String = "touch-keyboard-alternate-key-style",
+				factoryID:String = "touch-keyboard-alternate-key-id"):KeyData
 		{
 			var kd:KeyData = new KeyData;
 			kd.customLabel = label;
@@ -54,12 +54,12 @@ package feathers.touchKeyboard.data
 		}
 
 		public static function createSpaceBar(widthInUnits:Number = 5,
-		                                      flexibleWidth:Boolean = false,
-											  label:String = null,
-											  iconTexture:Texture = null,
-											  downIconTexture:Texture = null,
-											  customStyleName:String = "touch-keyboard-space-bar-style",
-											  factoryID:String = null):KeyData
+				flexibleWidth:Boolean = false,
+				label:String = null,
+				iconTexture:Texture = null,
+				downIconTexture:Texture = null,
+				customStyleName:String = "touch-keyboard-space-bar-style",
+				factoryID:String = null):KeyData
 		{
 			var kd:KeyData = new KeyData;
 			kd.widthInUnits = widthInUnits;
@@ -75,14 +75,14 @@ package feathers.touchKeyboard.data
 		}
 
 		public static function createToggleKey(label:String,
-											   keyCode:uint,
-											   widthInUnits:Number = 1, 
-											   flexibleWidth:Boolean = false,
-											   iconTexture:Texture = null,
-											   downIconTexture:Texture = null,
-											   selectedIconTexture:Texture = null,
-											   customStyleName:String = "touch-keyboard-alternate-key-style",
-											   factoryID:String = "touch-keyboard-alternate-key-id"):KeyData
+				keyCode:uint,
+				widthInUnits:Number = 1,
+				flexibleWidth:Boolean = false,
+				iconTexture:Texture = null,
+				downIconTexture:Texture = null,
+				selectedIconTexture:Texture = null,
+				customStyleName:String = "touch-keyboard-alternate-key-style",
+				factoryID:String = "touch-keyboard-alternate-key-id"):KeyData
 		{
 			var kd:KeyData = new KeyData;
 			kd.customLabel = label;
@@ -99,14 +99,14 @@ package feathers.touchKeyboard.data
 		}
 
 		public static function createSwitchLayoutKey(label:String,
-													 layoutID:String,
-													 widthInUnits:Number = 1.5,
-													 flexibleWidth:Boolean = false,
-													 iconTexture:Texture = null,
-													 downIconTexture:Texture = null,
-													 selectedIconTexture:Texture = null,
-													 customStyleName:String = "touch-keyboard-alternate-key-style",
-													 factoryID:String = "touch-keyboard-alternate-key-id"):KeyData
+				layoutID:String,
+				widthInUnits:Number = 1.5,
+				flexibleWidth:Boolean = false,
+				iconTexture:Texture = null,
+				downIconTexture:Texture = null,
+				selectedIconTexture:Texture = null,
+				customStyleName:String = "touch-keyboard-alternate-key-style",
+				factoryID:String = "touch-keyboard-alternate-key-id"):KeyData
 		{
 			var kd:KeyData = new KeyData;
 			kd.customLabel = label;
@@ -119,17 +119,17 @@ package feathers.touchKeyboard.data
 			kd.factoryID = factoryID;
 			kd.keyCode = TouchKeyboardKeyCode.SWITCH_LAYOUT;
 			kd.additionalData = layoutID;
-			return kd;	
+			return kd;
 		}
 
 		public var charCode:uint;
 
 		public var keyCode:uint;
-		
+
 		public var caseSensitive:Boolean;
 
 		public var customLabel:String;
-		
+
 		public var upperCaseCharCode:uint;
 
 		public var variantCharCodes:Vector.<uint>;

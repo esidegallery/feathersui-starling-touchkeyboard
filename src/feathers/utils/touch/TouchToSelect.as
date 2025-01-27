@@ -12,7 +12,7 @@ package feathers.utils.touch
 	import starling.events.TouchPhase;
 	import starling.utils.Pool;
 
-	/** 
+	/**
 	 * Extends TapToSelect to extend its functionality, allowing selection
 	 * and deselection to occur on more specific touch events.
 	 */
@@ -20,7 +20,8 @@ package feathers.utils.touch
 	{
 		/** Whether selection occurs on the down state rather than when triggered. */
 		public var selectOnDown:Boolean = true;
-		/** 
+
+		/**
 		 * Whether deselection occurs on the down state rather than when triggered.<br>
 		 * Applicable only when <code>tapToDeselect = true</code>.
 		 */
@@ -123,7 +124,7 @@ package feathers.utils.touch
 					}
 					else if (_tapToDeselect && deselectOnDown && _target.isSelected)
 					{
-						_target.isSelected = false;	
+						_target.isSelected = false;
 					}
 				}
 
@@ -133,5 +134,5 @@ package feathers.utils.touch
 				}
 			}
 		}
-	}	
+	}
 }
