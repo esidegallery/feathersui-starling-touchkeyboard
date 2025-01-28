@@ -1,4 +1,4 @@
-package feathers.touchKeyboard.events
+package feathers.events
 {
 	public class TouchKeyboardEventType
 	{

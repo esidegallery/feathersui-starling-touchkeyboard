@@ -11,6 +11,7 @@ package feathers.touchKeyboard
 	import feathers.data.IListCollection;
 	import feathers.data.VectorCollection;
 	import feathers.events.FeathersEventType;
+	import feathers.events.TouchKeyboardEventType;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.HorizontalLayoutData;
@@ -22,7 +23,6 @@ package feathers.touchKeyboard
 	import feathers.touchKeyboard.data.KeyboardLayoutData;
 	import feathers.touchKeyboard.data.RowData;
 	import feathers.touchKeyboard.data.TouchKeyboardKeyCode;
-	import feathers.touchKeyboard.events.TouchKeyboardEventType;
 
 	import flash.geom.Point;
 	import flash.ui.KeyLocation;
