@@ -11,7 +11,7 @@ package feathers.controls
 	{
 		public function TouchKeyboardTextArea()
 		{
-			textEditorFactory = function():ITextEditor
+			_textEditorFactory = function():ITextEditor
 			{
 				return new TouchKeyboardTextFieldTextEditorViewport;
 			};
