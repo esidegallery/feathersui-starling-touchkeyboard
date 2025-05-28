@@ -9,6 +9,16 @@ package feathers.controls
 
 	public class TouchKeyboardTextArea extends TextArea implements IFocusDisplayObject, ITouchKeyboardInput
 	{
+		private var _touchKeyboardLayoutID:String;
+		public function get touchKeyboardLayoutID():String
+		{
+			return _touchKeyboardLayoutID;
+		}
+		public function set touchKeyboardLayoutID(value:String):void
+		{
+			_touchKeyboardLayoutID = value;
+		}
+
 		public function TouchKeyboardTextArea()
 		{
 			_textEditorFactory = function():ITextEditor

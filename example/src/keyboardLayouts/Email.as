@@ -11,11 +11,11 @@ package keyboardLayouts
 
 	import starling.textures.Texture;
 
-	public class Qwerty extends KeyboardLayoutData
+	public class Email extends KeyboardLayoutData
 	{
-		public static const ID:String = "qwerty";
+		public static const ID:String = "email";
 
-		public function Qwerty(backspaceIcon:Texture = null, backspaceDownIcon:Texture = null,
+		public function Email(backspaceIcon:Texture = null, backspaceDownIcon:Texture = null,
 				shiftIcon:Texture = null, shiftDownIcon:Texture = null, shiftSelectedIcon:Texture = null,
 				returnIcon:Texture = null, returnDownIcon:Texture = null,
 				closeKeyboardIcon:Texture = null, closeKeyboardDownIcon:Texture = null)
@@ -56,14 +56,15 @@ package keyboardLayouts
 								KeyData.createCharacterKey("B".charCodeAt(), true),
 								KeyData.createCharacterKey("N".charCodeAt(), true),
 								KeyData.createCharacterKey("M".charCodeAt(), true),
-								KeyData.createCharacterKey(",".charCodeAt()),
+								KeyData.createCharacterKey("_".charCodeAt(), false, "-".charCodeAt()),
 								KeyData.createCharacterKey(".".charCodeAt()),
 								KeyData.createToggleKey(null, Keyboard.SHIFT, 1, false, shiftIcon, shiftDownIcon, shiftSelectedIcon)
 							]),
 						new RowData(new <IRenderableData>[
-								KeyData.createSwitchLayoutKey("&123", QwertyAlt.ID, 1.75),
+								KeyData.createSwitchLayoutKey("&123", EmailAlt.ID, 1.75),
 								new GapData,
 								KeyData.createSpaceBar(5, true),
+								KeyData.createCharacterKey("@".charCodeAt()),
 								new GapData,
 								KeyData.createNonCharacterKey(null, TouchKeyboardKeyCode.CLOSE_KEYBOARD, 1.75, false, closeKeyboardIcon, closeKeyboardDownIcon)
 							])

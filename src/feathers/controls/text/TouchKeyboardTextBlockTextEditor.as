@@ -10,6 +10,12 @@ package feathers.controls.text
 
 	public class TouchKeyboardTextBlockTextEditor extends TextBlockTextEditor implements ITouchKeyboardInput
 	{
+		public function get touchKeyboardLayoutID():String
+		{
+			// Not implemented in TextEditors.
+			return null;
+		}
+
 		public function touchKeyboard_keyDownHandler(event:KeyboardEvent):void
 		{
 			stage_keyDownHandler(event);

@@ -22,6 +22,12 @@ package feathers.controls.text
 			textInputRestrict.restrict = value;
 		}
 
+		public function get touchKeyboardLayoutID():String
+		{
+			// Not implemented in TextEditors.
+			return null;
+		}
+
 		public function touchKeyboard_keyDownHandler(event:KeyboardEvent):void
 		{
 			if (!_isEnabled || !_isEditable ||

@@ -12,6 +12,7 @@ package
 	import feathers.core.ITextRenderer;
 	import feathers.core.TouchKeyboardFocusManager;
 	import feathers.events.FeathersEventType;
+	import feathers.events.TouchKeyboardEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalAlign;
@@ -23,14 +24,16 @@ package
 	import feathers.touchKeyboard.KeyRenderer;
 	import feathers.touchKeyboard.TouchKeyboard;
 	import feathers.touchKeyboard.data.KeyboardLayoutData;
-	import feathers.touchKeyboard.events.TouchKeyboardEventType;
 
 	import flash.geom.Rectangle;
 	import flash.text.TextFormatAlign;
 	import flash.utils.setTimeout;
 
+	import keyboardLayouts.Email;
+	import keyboardLayouts.EmailAlt;
 	import keyboardLayouts.Numerical;
 	import keyboardLayouts.Qwerty;
+	import keyboardLayouts.QwertyAlt;
 
 	import starling.animation.Transitions;
 	import starling.core.Starling;
@@ -48,19 +51,21 @@ package
 	{
 		[Embed("assets/theme.png")]
 		private static const ATLAS_BITMAP:Class;
-		
+
 		[Embed("assets/theme.xml", mimeType="application/octet-stream")]
 		private static const ATLAS_XML:Class;
 
 		[Embed(source="assets/OpenSans-Regular.fnt", mimeType="application/octet-stream")]
 		public static const FONT_XML:Class;
-		
+
 		protected var atlas:TextureAtlas;
 
 		protected var font:BitmapFont;
-	
+
 		protected var textInputGroup:LayoutGroup;
 		protected var textInput:TouchKeyboardTextInput;
+		protected var emailInput:TouchKeyboardTextInput;
+		protected var numberInput:TouchKeyboardTextInput;
 		protected var textArea:TouchKeyboardTextArea;
 		protected var touchKeyboard:TouchKeyboard;
 		protected var touchKeyboardTweenID:int;
@@ -92,9 +97,9 @@ package
 			layout = new AnchorLayout;
 
 			FocusManager.focusManagerFactory = function(root:DisplayObjectContainer):IFocusManager
-				{
-					return new TouchKeyboardFocusManager(root);
-				}
+			{
+				return new TouchKeyboardFocusManager(root);
+			};
 			FocusManager.setEnabledForStage(stage, true);
 			FocusManager.getFocusManagerForStage(stage).addEventListener(Event.CHANGE, focusManager_changeHandler);
 
@@ -119,10 +124,22 @@ package
 			var textFormat:TextFormat = new TextFormat("_sans", 40, Color.BLACK, Align.LEFT);
 
 			textInput = new TouchKeyboardTextInput;
+			textInput.touchKeyboardLayoutID = Qwerty.ID;
 			textInput.fontStyles = textFormat;
 			textInputGroup.addChild(textInput);
 
+			emailInput = new TouchKeyboardTextInput;
+			emailInput.touchKeyboardLayoutID = Email.ID;
+			emailInput.fontStyles = textFormat;
+			textInputGroup.addChild(emailInput);
+
+			numberInput = new TouchKeyboardTextInput;
+			numberInput.touchKeyboardLayoutID = Numerical.ID;
+			numberInput.fontStyles = textFormat;
+			textInputGroup.addChild(numberInput);
+
 			textArea = new TouchKeyboardTextArea;
+			textArea.touchKeyboardLayoutID = Qwerty.ID;
 			textArea.fontStyles = textFormat;
 			textArea.paddingLeft = textInput.paddingLeft - 10; // Fixing misalignment in theme.
 			textInputGroup.addChild(textArea);
@@ -154,13 +171,13 @@ package
 			{
 				createTouchKeyboard();
 				touchKeyboard.addEventListener(FeathersEventType.CREATION_COMPLETE, function():void
-				{
-					setTimeout(openTouchKeyboard, 100);
-				});
+					{
+						setTimeout(openTouchKeyboard, 100);
+					});
 				touchKeyboard.validate();
 			}
 			else
-			{	
+			{
 				closeTouchKeyboard();
 			}
 		}
@@ -195,42 +212,59 @@ package
 				renderer.defaultSkin = skin;
 
 				return renderer;
-			}
+			};
 
 			touchKeyboard.setKeyRendererFactoryWithID(TouchKeyboard.FACTORY_ID_ALTERNATE_KEY, function():IListItemRenderer
-			{
-				var renderer:KeyRenderer = new KeyRenderer;
+				{
+					var renderer:KeyRenderer = new KeyRenderer;
 
-				var skin:ImageSkin = new ImageSkin(atlas.getTexture("dark-key"));
-				skin.selectedTexture = atlas.getTexture("light-key");
-				skin.setTextureForState(ButtonState.DOWN, atlas.getTexture("down-key"));
-				skin.setTextureForState(ButtonState.DOWN_AND_SELECTED, atlas.getTexture("down-key"));
-				skin.scale9Grid = new Rectangle(8, 8, 1, 1);
-				skin.pixelSnapping = true;
-				renderer.defaultSkin = skin;
+					var skin:ImageSkin = new ImageSkin(atlas.getTexture("dark-key"));
+					skin.selectedTexture = atlas.getTexture("light-key");
+					skin.setTextureForState(ButtonState.DOWN, atlas.getTexture("down-key"));
+					skin.setTextureForState(ButtonState.DOWN_AND_SELECTED, atlas.getTexture("down-key"));
+					skin.scale9Grid = new Rectangle(8, 8, 1, 1);
+					skin.pixelSnapping = true;
+					renderer.defaultSkin = skin;
 
-				renderer.labelFactory = keyLabelFactory;
+					renderer.labelFactory = keyLabelFactory;
 
-				return renderer;
-			});
+					return renderer;
+				});
 
 			touchKeyboard.backgroundSkin = new Image(atlas.getTexture("background"));
 			touchKeyboard.minimumKeyUnitSize = 75;
 
 			touchKeyboard.layouts = new <KeyboardLayoutData>[
-				new Qwerty(
-					atlas.getTexture("backspace"), atlas.getTexture("backspace-down"), 
-					atlas.getTexture("shift"), atlas.getTexture("shift-down"), atlas.getTexture("shift-down"), 
-					atlas.getTexture("return"), null,
-					atlas.getTexture("close-keyboard")
-				),
-				new Numerical(
-					atlas.getTexture("backspace"), atlas.getTexture("backspace-down"), 
-					atlas.getTexture("shift"), atlas.getTexture("shift-down"), atlas.getTexture("shift-down"), 
-					atlas.getTexture("return"), null,
-					atlas.getTexture("close-keyboard")
-				),
-			];
+					new Qwerty(
+						atlas.getTexture("backspace"), atlas.getTexture("backspace-down"),
+						atlas.getTexture("shift"), atlas.getTexture("shift-down"), atlas.getTexture("shift-down"),
+						atlas.getTexture("return"), null,
+						atlas.getTexture("close-keyboard")
+					),
+					new QwertyAlt(
+						atlas.getTexture("backspace"), atlas.getTexture("backspace-down"),
+						atlas.getTexture("shift"), atlas.getTexture("shift-down"), atlas.getTexture("shift-down"),
+						atlas.getTexture("return"), null,
+						atlas.getTexture("close-keyboard")
+					),
+					new Email(
+						atlas.getTexture("backspace"), atlas.getTexture("backspace-down"),
+						atlas.getTexture("shift"), atlas.getTexture("shift-down"), atlas.getTexture("shift-down"),
+						atlas.getTexture("return"), null,
+						atlas.getTexture("close-keyboard")
+					),
+					new EmailAlt(
+						atlas.getTexture("backspace"), atlas.getTexture("backspace-down"),
+						atlas.getTexture("shift"), atlas.getTexture("shift-down"), atlas.getTexture("shift-down"),
+						atlas.getTexture("return"), null,
+						atlas.getTexture("close-keyboard")
+					),
+					new Numerical(
+						atlas.getTexture("backspace"), atlas.getTexture("backspace-down"),
+						atlas.getTexture("return"), null,
+						atlas.getTexture("close-keyboard")
+					)
+				];
 
 			touchKeyboard.addEventListener(TouchKeyboardEventType.CLOSE_REQUESTED, closeTouchKeyboard);
 			touchKeyboard.layoutData = new AnchorLayoutData(this.height, 0, NaN, 0);
@@ -258,9 +292,9 @@ package
 			if (ald.top > topTo)
 			{
 				Starling.juggler.tween(ald, 0.4, {
-					top: topTo,
-					transition: Transitions.EASE_OUT
-				});
+							top: topTo,
+							transition: Transitions.EASE_OUT
+						});
 			}
 		}
 
@@ -270,13 +304,13 @@ package
 			{
 				var ald:AnchorLayoutData = touchKeyboard.layoutData as AnchorLayoutData;
 				Starling.juggler.tween(ald, 0.4, {
-					top: this.height,
-					transition: Transitions.EASE_OUT,
-					onComplete: function():void
-					{
-						destroyTouchKeyboard();
-					}
-				});
+							top: this.height,
+							transition: Transitions.EASE_OUT,
+							onComplete: function():void
+							{
+								destroyTouchKeyboard();
+							}
+						});
 			}
 		}
 

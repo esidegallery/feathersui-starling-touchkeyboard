@@ -1,9 +1,9 @@
 package
 {
-	import feathers.themes.TopcoatLightMobileTheme;
 	import feathers.controls.TextArea;
-	import feathers.skins.ImageSkin;
 	import feathers.controls.TextInputState;
+	import feathers.skins.ImageSkin;
+	import feathers.themes.TopcoatLightMobileTheme;
 
 	/** Removes the setting of TextArea.textEditorFactory */
 	public class TopcoatLightMobileThemeMod extends TopcoatLightMobileTheme

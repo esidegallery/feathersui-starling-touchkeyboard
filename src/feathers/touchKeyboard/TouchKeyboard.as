@@ -55,6 +55,7 @@ package feathers.touchKeyboard
 		public static const STYLE_NAME_DOWN_ARROW_KEY:String = "touch-keyboard-down-arrow-key-style";
 		public static const STYLE_NAME_HIDE_KEYBOARD_KEY:String = "touch-keyboard-hide-keyboard-key-style";
 
+		protected static const INVALIDATION_FLAG_LAYOUTS:String = "layouts";
 		protected static const INVALIDATION_FLAG_MODIFIERS:String = "modifiers";
 
 		public static var globalStyleProvider:IStyleProvider;
@@ -296,7 +297,7 @@ package feathers.touchKeyboard
 				return;
 			}
 			_layouts = value;
-			invalidate(INVALIDATION_FLAG_DATA);
+			invalidate(INVALIDATION_FLAG_LAYOUTS);
 			if (_layouts != null && _layouts.length > 0)
 			{
 				_selectedLayoutIndex = 0;
@@ -310,6 +311,8 @@ package feathers.touchKeyboard
 		}
 
 		protected var _selectedLayoutIndex:int = -1;
+
+		/** Overridden if focused <code>ITouchKeyboardInput</code> defines a <code>touchKeyboardLayoutID</code>. */
 		public function get selectedLayoutIndex():int
 		{
 			return _selectedLayoutIndex;
@@ -324,6 +327,7 @@ package feathers.touchKeyboard
 			super.dataProvider = new VectorCollection(_layouts[_selectedLayoutIndex].rows);
 		}
 
+		/** Overridden if focused <code>ITouchKeyboardInput</code> defines a <code>touchKeyboardLayoutID</code>. */
 		public function get selectedLayoutID():String
 		{
 			if (_selectedLayoutIndex == -1)
@@ -478,8 +482,9 @@ package feathers.touchKeyboard
 
 		override protected function draw():void
 		{
-			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
+			var sizeInvalid:Boolean = isInvalid(INVALIDATION_FLAG_SIZE);
+			var layoutInvalid:Boolean = isInvalid(INVALIDATION_FLAG_LAYOUT);
+			var layoutsInvalid:Boolean = isInvalid(INVALIDATION_FLAG_LAYOUTS);
 			var modifiersInvalid:Boolean = isInvalid(INVALIDATION_FLAG_MODIFIERS);
 
 			if (modifiersInvalid)
@@ -529,6 +534,11 @@ package feathers.touchKeyboard
 							break;
 					}
 				}
+			}
+
+			if (layoutsInvalid)
+			{
+				applyTouchKeyboardLayout();
 			}
 
 			super.draw();
@@ -586,11 +596,11 @@ package feathers.touchKeyboard
 		/** We want the HitTest to either return a KeyRenderer, this or nowt. */
 		override public function hitTest(localPoint:Point):DisplayObject
 		{
-			if (!this.visible || !this.touchable)
+			if (!visible || !touchable)
 			{
 				return null;
 			}
-			if (this.mask && !this.hitTestMask(localPoint))
+			if (mask && !hitTestMask(localPoint))
 			{
 				return null;
 			}
@@ -599,7 +609,7 @@ package feathers.touchKeyboard
 			{
 				return result;
 			}
-			return this._hitArea.containsPoint(localPoint) ? this : null;
+			return _hitArea.containsPoint(localPoint) ? this : null;
 		}
 
 		/** Updates the renderer properties & layout. */
@@ -687,6 +697,15 @@ package feathers.touchKeyboard
 			}
 		}
 
+		private function applyTouchKeyboardLayout():void
+		{
+			var focusManager:IFocusManager = FocusManager.getFocusManagerForStage(stage);
+			if (focusManager != null && focusManager.focus is ITouchKeyboardInput && (focusManager.focus as ITouchKeyboardInput).touchKeyboardLayoutID)
+			{
+				selectedLayoutID = (focusManager.focus as ITouchKeyboardInput).touchKeyboardLayoutID;
+			}
+		}
+
 		protected function dispatchKeyboardEvent(type:String, charCode:uint, keyCode:uint, keyLocation:int):void
 		{
 			var event:KeyboardEvent = new KeyboardEvent(type, charCode, keyCode, keyLocation, _ctrl, _alt, _shift);
@@ -702,13 +721,28 @@ package feathers.touchKeyboard
 			dispatchEvent(event);
 		}
 
+		override protected function feathersControl_addedToStageHandler(event:Event):void
+		{
+			applyTouchKeyboardLayout();
+			var focusManager:IFocusManager = FocusManager.getFocusManagerForStage(stage);
+			if (focusManager != null)
+			{
+				focusManager.addEventListener(Event.CHANGE, applyTouchKeyboardLayout);
+			}
+			super.feathersControl_addedToStageHandler(event);
+		}
+
 		override protected function feathersControl_removedFromStageHandler(event:Event):void
 		{
 			// If the focused control is a touch keyboard input, clear the focus:
 			var focusManager:IFocusManager = FocusManager.getFocusManagerForStage(stage);
-			if (focusManager != null && focusManager.focus is ITouchKeyboardInput)
+			if (focusManager != null)
 			{
-				focusManager.focus = null;
+				focusManager.removeEventListener(Event.CHANGE, applyTouchKeyboardLayout);
+				if (focusManager.focus is ITouchKeyboardInput)
+				{
+					focusManager.focus = null;
+				}
 			}
 			super.feathersControl_removedFromStageHandler(event);
 		}
